@@ -24,7 +24,7 @@ def getDescriptors(path,functionHandleDescriptor):
         print(imagePath)
         im=cv2.imread(imagePath)
         kp,des = functionHandleDescriptor(im)
-        if des!=None:
+        if len(des) > 0: 
             descriptors.append(des)
             print(len(kp))
         
@@ -61,7 +61,7 @@ def getVLADDescriptors(path,functionHandleDescriptor,visualDictionary):
         print(imagePath)
         im=cv2.imread(imagePath)
         kp,des = functionHandleDescriptor(im)
-        if des!=None:
+        if len(des) > 0:
             v=VLAD(des,visualDictionary)
             descriptors.append(v)
             idImage.append(imagePath)
@@ -250,9 +250,9 @@ def query(image, k,descriptorName, visualDictionary,tree):
 
     #compute VLAD
     v=VLAD(descriptor,visualDictionary)
-
+    v2 = v.reshape(1, -1)
     #find the k most relevant images
-    dist, ind = tree.query(v, k)    
+    dist, ind = tree.query(v2, k)    
 
     return dist, ind
 
